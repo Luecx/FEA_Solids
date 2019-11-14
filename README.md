@@ -1,7 +1,7 @@
 # FEA_Solids
 
-A library to calculate stresses in structures.
-Implemented are 2d triangles but this could easily be extended.
+a library to calculate stresses in structures.
+implemented are 2d triangles but this could easily be extended.
 
 required libraries for compiling can be found here:
  * [MatrixLibrary](https://github.com/Luecx/MatrixLibrary)
