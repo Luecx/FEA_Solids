@@ -1,6 +1,7 @@
 # FEA_Solids
 
 <img alt="GitHub" src="https://img.shields.io/github/license/Luecx/FEA_Solids">
+<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/Luecx/FEA_Solids">
 
 A library to calculate stresses in structures.
 Implemented are 2d triangles but this could easily be extended.
