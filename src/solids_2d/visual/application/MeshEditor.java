@@ -818,7 +818,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
 
         solver_menu_topology_optimization.setText("topology optimization");
 
-        item_to_simple.setText("topology optimization");
+        item_to_simple.setText("Simple");
         item_to_simple.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 item_to_simpleActionPerformed(evt);
@@ -889,54 +889,73 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
 
     private void radio_nothingActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = -1;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_nothing.setSelected(true);
         redraw();
     }
 
     private void radio_stressActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = 0;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_stress.setSelected(true);
         redraw();
     }
 
     private void radio_displacementActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = 1;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_displacement.setSelected(true);
         redraw();
     }
 
     private void radio_youngActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = 2;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_young.setSelected(true);
         redraw();
     }
 
     private void radio_stress_xActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = 3;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_stress_x.setSelected(true);
         redraw();
     }
 
     private void radio_stress_yActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = 4;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_stress_y.setSelected(true);
+
         redraw();
     }
 
     private void radio_stress_xyActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = 5;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_stress_xy.setSelected(true);
         redraw();
     }
 
     private void radio_displacement_xActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = 6;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_displacement_x.setSelected(true);
         redraw();
     }
 
     private void radio_displacement_yActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = 7;
+        jPanel1.lower_scaler = 1;
+        jPanel1.upper_scalar = 1;
         radio_displacement_x.setSelected(true);
         redraw();
     }
