@@ -904,7 +904,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
     }
 
     private void radio_displacementActionPerformed(java.awt.event.ActionEvent evt) {
-        jPanel1.renderMode = 1;
+        jPanel1.renderMode = 2;
         jPanel1.lower_scaler = 1;
         jPanel1.upper_scalar = 1;
         radio_displacement.setSelected(true);
@@ -912,7 +912,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
     }
 
     private void radio_youngActionPerformed(java.awt.event.ActionEvent evt) {
-        jPanel1.renderMode = 2;
+        jPanel1.renderMode = 1;
         jPanel1.lower_scaler = 1;
         jPanel1.upper_scalar = 1;
         radio_young.setSelected(true);

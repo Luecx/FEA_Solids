@@ -10,6 +10,7 @@ import solids_2d.elements.FiniteElement2D;
 import solids_2d.elements.Triangle;
 import solids_2d.solution.Stress2D;
 import visuals.ColorPalette;
+import visuals.Panel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,7 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
-public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListener {
+public class FEM_Panel extends Panel implements KeyListener, MouseListener {
 
 
     public static final int NONE = -1;
@@ -38,7 +39,7 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
     public boolean renderKeys;
     public boolean renderGrid;
     public boolean renderWireframe;
-    public boolean renderColorPalette= true;
+    public boolean renderColorPalette = true;
 
 
     private Mesh mesh;
@@ -49,7 +50,6 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
     private boolean render_image = false;
     private int render_image_width = 2560;
     private int render_image_height = 1440;
-
 
 
     public FEM_Panel(Mesh mesh) {
@@ -64,7 +64,7 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
         this.mesh = mesh;
         this.highlightedNode = null;
 
-        if(this.mesh == null) return;
+        if (this.mesh == null) return;
 
         double min_x, max_x, min_y, max_y;
         min_x = 100000000;
@@ -90,10 +90,10 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
         max_y = center_y - (center_y - max_y) * zoom;
         min_y = center_y - (center_y - min_y) * zoom;
 
-        double max_scale = Math.max(max_x-min_x, max_y-min_y);
+        double max_scale = Math.max(max_x - min_x, max_y - min_y);
 
         this.setCenter(new Vector2d(center_x, center_y));
-        this.setScale(new Vector2d(max_scale,max_scale));
+        this.setScale(new Vector2d(max_scale, max_scale));
 
 
     }
@@ -102,12 +102,12 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
         return a.getPosition2D().add(a.getDisplacement());
     }
 
-    public Node closestNode(Vector2d mousePosition){
+    public Node closestNode(Vector2d mousePosition) {
         Node closest = null;
         double dist = Double.POSITIVE_INFINITY;
-        for(Node n:mesh.getVertices()){
-            double k = n.getPosition2D().sub(mousePosition).length();
-            if(k < dist){
+        for (Node n : mesh.getVertices()) {
+            double k = moved_position(n).sub(mousePosition).length();
+            if (k < dist) {
                 dist = k;
                 closest = n;
             }
@@ -155,24 +155,24 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
 
     @Override
     public int getWidth() {
-        if(render_image == false)
+        if (render_image == false)
             return super.getWidth();
         return render_image_width;
     }
 
     @Override
     public int getHeight() {
-        if(render_image == false)
+        if (render_image == false)
             return super.getHeight();
         return render_image_height;
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        this.render((Graphics2D)g);
+        this.render((Graphics2D) g);
     }
 
-    public BufferedImage renderImage(int width, int height){
+    public BufferedImage renderImage(int width, int height) {
         this.render_image = true;
         this.render_image_height = height;
         this.render_image_width = width;
@@ -186,7 +186,7 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
         return bImg;
     }
 
-    private void render(Graphics2D g){
+    private void render(Graphics2D g) {
         g.clearRect(0, 0, this.getWidth(), this.getHeight());
 
         if (renderGrid) {
@@ -194,7 +194,7 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
         }
 
 
-        if(mesh != null){
+        if (mesh != null) {
             double min = min_val();
             double max = max_val();
             render_cells(g, min, max);
@@ -210,8 +210,8 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
             if (this.renderBCs) {
                 render_bc(g);
             }
-            if (this.renderColorPalette){
-                ColorPalette.RAINBOW.drawColorPalette(g, min, max, 10, 300);
+            if (this.renderColorPalette) {
+                render_cp(g, min, max);
             }
         }
 
@@ -219,10 +219,17 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
             render_keys(g);
         }
 
-        if (this.highlightedNode != null){
+        if (this.highlightedNode != null) {
             this.render_highlighted_node(g);
         }
 
+    }
+
+    private void render_cp(Graphics2D g, double min, double max) {
+        ColorPalette.RAINBOW.drawColorPalette(g, min, max, 10, 300);
+        String s = new String[]{"none", "stress", "e-module", "displacement", "stress_x", "stress_y",
+                "stress_xy", "displacement_x", "displacement_y"}[renderMode + 1];
+        g.drawString(s, 30, 340);
     }
 
     private double max_val() {
@@ -243,10 +250,10 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
         return min_val * this.lower_scaler;
     }
 
-    private void render_highlighted_node(Graphics2D g){
-        Vector2d screen = toScreenSpace(highlightedNode.getPosition2D());
+    private void render_highlighted_node(Graphics2D g) {
+        Vector2d screen = toScreenSpace(moved_position(highlightedNode));
         g.setColor(Color.red);
-        g.fillRect((int)screen.getX() - 5, (int)screen.getY() - 5, 11,11);
+        g.fillRect((int) screen.getX() - 5, (int) screen.getY() - 5, 11, 11);
     }
 
     private void render_cells(Graphics2D g, double min, double max) {
@@ -378,7 +385,7 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
 
     }
 
-    private void render_information(Graphics2D g){
+    private void render_information(Graphics2D g) {
         String[] strings = {
                 "faces:" + mesh.getFaces().size(),
                 "edges:" + mesh.getEdges().size() + " (internal edge count)",
@@ -390,7 +397,7 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
         g.setFont(font);
         g.setColor(Color.black);
         for (int i = 0; i < strings.length; i++) {
-            g.drawString(strings[i], 140, 30+20 * i);
+            g.drawString(strings[i], 140, 30 + 20 * i);
         }
     }
 
@@ -481,7 +488,7 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
         this.repaint();
     }
 
-    public Node process_mouse_click(int screen_x, int screen_y){
+    public Node process_mouse_click(int screen_x, int screen_y) {
         //this.mousePosition = this.toWorldSpace(new Vector2d(screen_x-8, screen_y-28));
         Vector2d mousePos = this.toWorldSpace(new Vector2d(screen_x, screen_y));
         this.repaint();
@@ -504,7 +511,8 @@ public class FEM_Panel extends visuals.Panel implements KeyListener, MouseListen
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseClicked(MouseEvent e) {
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
