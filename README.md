@@ -2,7 +2,6 @@
 
 <img alt="GitHub" src="https://img.shields.io/github/license/Luecx/FEA_Solids"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/Luecx/FEA_Solids">
 
-![](https://image.prntscr.com/image/1TgsUl6jTWyXefpJSgqI1Q.png)
 
 
 A library to calculate stresses in structures.
@@ -20,6 +19,7 @@ Alternatively you can directly download the [compiled jar and resources](https:/
 
 
 
+![](https://image.prntscr.com/image/1TgsUl6jTWyXefpJSgqI1Q.png)
 
 
 
