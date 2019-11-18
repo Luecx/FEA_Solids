@@ -121,7 +121,7 @@ public class MeshGenerator extends javax.swing.JDialog {
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(
-                new File("").getAbsolutePath() + "/resources/rec.png")); // NOI18N
+                new File("").getAbsolutePath() + "/resources/images/rec.png")); // NOI18N
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
 
@@ -185,7 +185,7 @@ public class MeshGenerator extends javax.swing.JDialog {
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(
-                new File("").getAbsolutePath() + "/resources/arc.png")); // NOI18N
+                new File("").getAbsolutePath() + "/resources/images/arc.png")); // NOI18N
         jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);

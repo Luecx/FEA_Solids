@@ -18,6 +18,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
 
 public class FEM_Panel extends Panel implements KeyListener, MouseListener {
 
@@ -40,7 +41,6 @@ public class FEM_Panel extends Panel implements KeyListener, MouseListener {
     public boolean renderGrid;
     public boolean renderWireframe;
     public boolean renderColorPalette = true;
-
 
     private Mesh mesh;
 
@@ -153,6 +153,28 @@ public class FEM_Panel extends Panel implements KeyListener, MouseListener {
         return 0;
     }
 
+
+    @Override
+    protected Vector2d toScreenSpace(Vector2d vector2d) {
+        Vector2d rect = new Vector2d(scale);
+        double aspectRatio = this.getWidth() / (double)this.getHeight();
+        scale.setX(rect.getX() * aspectRatio);
+        Vector2d retu =  super.toScreenSpace(vector2d);
+        this.scale = rect;
+        return retu;
+    }
+
+    @Override
+    protected Vector2d toWorldSpace(Vector2d screenSpace) {
+        Vector2d rect = new Vector2d(scale);
+        double aspectRatio = this.getWidth() / (double)this.getHeight();
+        scale.setX(rect.getX() * aspectRatio);
+        Vector2d retu =  super.toWorldSpace(screenSpace);
+        this.scale = rect;
+        return retu;
+    }
+
+
     @Override
     public int getWidth() {
         if (render_image == false)
@@ -186,10 +208,14 @@ public class FEM_Panel extends Panel implements KeyListener, MouseListener {
         return bImg;
     }
 
+
     private void render(Graphics2D g) {
         g.clearRect(0, 0, this.getWidth(), this.getHeight());
+        g.setColor(Color.white);
+        g.fillRect(0,0,this.getWidth(), this.getHeight());
 
         if (renderGrid) {
+            g.setColor(Color.lightGray);
             this.draw_grid(g);
         }
 
@@ -315,7 +341,7 @@ public class FEM_Panel extends Panel implements KeyListener, MouseListener {
                 draw_arrow(g, a1.sub(new Vector2d(60, 0)), a1, 10, 25, 25);
             }
             if (node.getSupport().getY() != 0) {
-                draw_arrow(g, a1.sub(new Vector2d(0, 60)), a1, 10, 25, 25);
+                draw_arrow(g, a1.add(new Vector2d(0, 60)), a1, 10, 25, 25);
             }
             if (node.getForce() != null) {
                 Vector2d force = new Vector2d(node.getForce()).self_normalise().self_scale(60);

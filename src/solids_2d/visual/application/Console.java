@@ -35,8 +35,6 @@ public class Console extends JFrame {
     private PrintStream printStream = new PrintStream(new FilteredStream(new ByteArrayOutputStream()));
     private JTextArea textArea;
 
-    int currentLine = 0;
-
     class FilteredStream extends FilterOutputStream {
         public FilteredStream(OutputStream aStream) {
             super(aStream);
@@ -78,6 +76,8 @@ public class Console extends JFrame {
                 textArea.setText(begin + end);
                 //System.err.println(startIndex + " #### " + lastR);
             }
+
+            textArea.setCaretPosition(textArea.getDocument().getLength());
 
         }
     }

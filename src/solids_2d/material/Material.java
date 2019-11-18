@@ -17,8 +17,8 @@ public class Material {
 
 
     public Material(Materials template){
-        this.young = template.e_module;
-        this.poisson = 0.25;
+        this.young = template.young;
+        this.poisson = template.poisson;
     }
 
     public Material(double young, double poisson) {
