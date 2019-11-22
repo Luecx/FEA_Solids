@@ -24,7 +24,7 @@ public class Console extends JFrame {
         super();
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         textArea.setColumns(20);
         textArea.setRows(5);
         textArea.setEditable(false);
