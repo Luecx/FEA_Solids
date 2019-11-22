@@ -249,14 +249,6 @@ public class FEM_Panel extends Panel implements KeyListener, MouseListener {
             this.render_highlighted_node(g);
         }
 
-        g.setStroke(new BasicStroke(5));
-
-        Vector2d center_screenSpace = toScreenSpace(new Vector2d(3,3));
-        Vector2d rechter_rand_screenSpace = toScreenSpace(new Vector2d(4,3));
-
-        g.drawOval((int)center_screenSpace.getX(),(int)center_screenSpace.getY(),
-                (int)(rechter_rand_screenSpace.getX() - center_screenSpace.getX()) * 2,60);
-
     }
 
     private void render_cp(Graphics2D g, double min, double max) {
