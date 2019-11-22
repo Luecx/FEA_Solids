@@ -1,5 +1,8 @@
 package solids_2d.visual;
 
+import core.matrix.Matrix;
+import core.solver.direct.Solver;
+import core.vector.DenseVector;
 import solids_2d.Mesh;
 import solids_2d.Node;
 import solids_2d.constraint.Force;
@@ -13,6 +16,7 @@ import tools.Loader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.function.Consumer;
 
 public class Cases {
@@ -47,19 +51,19 @@ public class Cases {
         Node n3 = new Node(-3, 2);
         Node n4 = new Node(-3, 0);
 
-        Triangle t1 = new Triangle(n1, n4,n2);
-        Triangle t2 = new Triangle(n3, n4,n2);
+        Triangle t1 = new Triangle(n4,n1,n2);
+        Triangle t2 = new Triangle(n3,n2,n4);
 
         t1.setThickness(0.5);
         t2.setThickness(0.5);
 
-        t1.setMaterial(new Material(30 * 1E2, 0.25));
-        t2.setMaterial(new Material(30 * 1E2, 0.25));
+        t1.setMaterial(new Material(30 * 1E6, 0.25));
+        t2.setMaterial(new Material(30 * 1E6, 0.25));
 
         n1.setSupport(new Support(false, true));
         n3.setSupport(new Support(true, true));
         n4.setSupport(new Support(true, true));
-        n2.setForce(new Force(0, -1));
+        n2.setForce(new Force(0, -1000));
 
         ArrayList<Node> vertices = new ArrayList<>();
         vertices.add(n1);
@@ -72,12 +76,20 @@ public class Cases {
         t1.prepare();
         t2.prepare();
 
-        //System.out.println(t1.generate_reduced_stiffness_matrix());
-        //System.out.println(t2.generate_reduced_stiffness_matrix());
-        //mesh.solve();
+        Matrix m = mesh.build_reduced_stiffnes_matrix();
+        DenseVector v = mesh.build_reduced_load_vector();
+
+
+//        System.out.println(t1.generate_reduced_stiffness_matrix());
+//        System.out.println(t2.generate_reduced_stiffness_matrix());
+        mesh.solve();
+
+
+        System.out.println(t1.getStress2D());
+        System.out.println(t2.getStress2D());
         //System.out.println(mesh.build_complete_stiffnes_matrix());
-        System.out.println(mesh.build_reduced_stiffnes_matrix());
-        //new Frame(mesh);
+        //System.out.println(mesh.build_reduced_stiffnes_matrix());
+        new Frame(mesh).renderMode(FEM_Panel.STRESS).renderBoundaryConditions().enableWireframe();
     }
 
     public static Mesh rectangle_1(double w, double h, int subd_w, int subd_h, double force) {
@@ -116,20 +128,22 @@ public class Cases {
 //        new Simple(mesh).run();
 //        Loader.write("rect_2.mesh", mesh);
 
-        Mesh mesh = new Mesh();
-        Loader.load("C:\\Users\\finne\\Desktop\\rect_100_500.mesh", mesh);
-
-        new Simple(mesh){
-            @Override
-            public void updateListener(String update, double p) {
-                try {
-                    Loader.write("C:\\Users\\finne\\Desktop\\rect_100_500_"+p+".mesh", mesh);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.run();
-
+//        Mesh mesh = new Mesh();
+//        Loader.load("C:\\Users\\finne\\Desktop\\rect_100_500.mesh", mesh);
+//
+//        new Simple(mesh){
+//            @Override
+//            public void updateListener(String update, double p) {
+//                try {
+//                    Loader.write("C:\\Users\\finne\\Desktop\\rect_100_500_"+p+".mesh", mesh);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.run();
+        int cores = Runtime.getRuntime().availableProcessors();
+        System.out.println(cores);
+        //init_testing();
 
     }
 

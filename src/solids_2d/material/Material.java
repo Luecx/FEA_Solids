@@ -62,7 +62,7 @@ public class Material {
             matrix.setValue(0,1,v);
             matrix.setValue(1,1,1);
             matrix.setValue(2,2, (1-v) / 2);
-            matrix.scale(E / (1-v*v ));
+            matrix.self_scale(E / (1-v*v ));
         }
         return matrix;
 

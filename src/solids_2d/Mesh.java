@@ -117,31 +117,33 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
 
         Matrix matrix = this.build_reduced_stiffnes_matrix();
         DenseVector loads = this.build_reduced_load_vector();
-        DenseVector displacements = Solver.conjugate_gradient(matrix, loads);
 
+        System.out.println("Solving with matrix size=("+matrix.getM() + ", " + matrix.getN() +")    non zero count: " + matrix.storageSize() );
+
+        DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads,8);
+        //DenseVector displacements = Solver.conjugate_gradient(matrix, loads);
         this.apply_solution(displacements);
-
-        //System.err.println(matrix.sub(matrix.transpose()).norm_1());
-
-
         this.calculate_stresses();
 
-        System.out.println("Solving and processing took: " + (System.currentTimeMillis()- millis) / 1000d + "s");
+        System.out.println("  Solving and processing took: " + (System.currentTimeMillis()- millis) / 1000d + "s");
 
         return displacements;
     }
 
     public DenseVector solve(DenseVector x_0) {
+        long millis = System.currentTimeMillis();
         Matrix matrix = this.build_reduced_stiffnes_matrix();
         DenseVector loads = this.build_reduced_load_vector();
-        DenseVector displacements = Solver.conjugate_gradient(matrix, loads, x_0);
+
+        System.out.println("Solving with matrix size=("+matrix.getM() + ", " + matrix.getN() +")    non zero count: " + matrix.storageSize() );
+
+        DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads, x_0,8);
 
         this.apply_solution(displacements);
-
-        //System.err.println(matrix.sub(matrix.transpose()).norm_1());
-
-
         this.calculate_stresses();
+
+        System.out.println("  Solving and processing took: " + (System.currentTimeMillis()- millis) / 1000d + "s");
+
         return displacements;
     }
 

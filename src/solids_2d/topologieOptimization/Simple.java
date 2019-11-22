@@ -122,8 +122,8 @@ public class Simple {
         m.getVertices().get(1660).setSupport(new Support(true,true));
         m.getVertices().get(1680).setSupport(new Support(true,true));
 
-        m.getVertices().get(840).setForce(new Force(0,100));
-        m.getVertices().get(862).setForce(new Force(0,100));
+        m.getVertices().get(840).setForce(new Force(0,1000));
+        m.getVertices().get(862).setForce(new Force(0,1000));
 
 //        m.getNodes().get(n / 3).setSupport(new Support(true,true));
 //        m.getNodes().get(n / 3 * 2).setSupport(new Support(true,true));
@@ -161,13 +161,13 @@ public class Simple {
             }
         });
         m.solve();
-        Simple s = new Simple(m);
-        s.run();
+        //Simple s = new Simple(m);
+        //s.run();
 
 
-        Loader.write("rect_optimized_load_bottom.mesh", m);
+        //Loader.write("rect_optimized_load_bottom.mesh", m);
 
-        new Frame(m).renderMode(-1);
+        new Frame(m).renderMode(0).renderBoundaryConditions();
 
     }
 

@@ -56,7 +56,6 @@ public class Triangle extends FiniteElement2D{
 
         this.Area = Math.abs(det_J) / 2;
 
-
         B = new DenseMatrix(3, 6);
         B.setValue(0, 0, b.getPosition().getY() - c.getPosition().getY());
         B.setValue(0, 2, c.getPosition().getY() - a.getPosition().getY());
@@ -72,7 +71,7 @@ public class Triangle extends FiniteElement2D{
         B.setValue(2, 3, c.getPosition().getY() - a.getPosition().getY());
         B.setValue(2, 4, b.getPosition().getX() - a.getPosition().getX());
         B.setValue(2, 5, a.getPosition().getY() - b.getPosition().getY());
-        B.scale(1d / det_J);
+        B.self_scale(1d / det_J);
 
 
         D = this.getMaterial().material_matrix();
@@ -81,17 +80,19 @@ public class Triangle extends FiniteElement2D{
     @Override
     public Matrix generate_reduced_stiffness_matrix() {
         Matrix res = B.transpose().mul(D).mul(B);
-        res.scale(Area * this.getThickness());
+        res.self_scale(Area * this.getThickness());
         return res;
     }
 
     @Override
     public void evaluate_stress() {
         DenseVector sol = D.mul(B).mul(getNodeDisplacement());
+
         this.setStress2D(new Stress2D(
                 sol.getValue(0),
                 sol.getValue(1),
                 sol.getValue(2)));
+
         //this.setDisplacement();
     }
 
