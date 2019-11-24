@@ -141,9 +141,7 @@ public class Cases {
 //                }
 //            }
 //        }.run();
-        int cores = Runtime.getRuntime().availableProcessors();
-        System.out.println(cores);
-        //init_testing();
+        init_testing();
 
     }
 

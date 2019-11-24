@@ -7,6 +7,7 @@ import core.matrix.Matrix;
 import core.matrix.sparse_matrix.HashMatrix;
 import core.matrix.sparse_matrix.SparseMatrix;
 import core.solver.direct.Solver;
+import core.threads.Pool;
 import core.vector.DenseVector;
 import core.vector.Vector;
 import core.vector.Vector2d;
@@ -113,36 +114,23 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
 
 
     public DenseVector solve() {
-        long millis = System.currentTimeMillis();
-
         Matrix matrix = this.build_reduced_stiffnes_matrix();
         DenseVector loads = this.build_reduced_load_vector();
+        DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads, Pool.getAvailableProcessors());
 
-        System.out.println("Solving with matrix size=("+matrix.getM() + ", " + matrix.getN() +")    non zero count: " + matrix.storageSize() );
-
-        DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads,8);
-        //DenseVector displacements = Solver.conjugate_gradient(matrix, loads);
         this.apply_solution(displacements);
         this.calculate_stresses();
-
-        System.out.println("  Solving and processing took: " + (System.currentTimeMillis()- millis) / 1000d + "s");
 
         return displacements;
     }
 
     public DenseVector solve(DenseVector x_0) {
-        long millis = System.currentTimeMillis();
         Matrix matrix = this.build_reduced_stiffnes_matrix();
         DenseVector loads = this.build_reduced_load_vector();
-
-        System.out.println("Solving with matrix size=("+matrix.getM() + ", " + matrix.getN() +")    non zero count: " + matrix.storageSize() );
-
-        DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads, x_0,8);
+        DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads, x_0,Pool.getAvailableProcessors());
 
         this.apply_solution(displacements);
         this.calculate_stresses();
-
-        System.out.println("  Solving and processing took: " + (System.currentTimeMillis()- millis) / 1000d + "s");
 
         return displacements;
     }
@@ -161,7 +149,6 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
             if(this.vertices.get(i).getSupport() != null){
                 this.vertices.get(i).getSupport().setSupport_force(new Force(sol.getValue(2*i), sol.getValue(2 * i + 1)));
             }
-            //this.nodes.get(i).setForce(new Force(sol.getValue(2*i), sol.getValue(2 * i + 1)));
         }
 
         return displ;
@@ -179,65 +166,6 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
         for(Node n:getVertices()){
             consumer.accept(n);
         }
-    }
-
-
-    public static void main(String[] args) {
-
-
-////
-//
-//
-        Mesh mesh = Generator.rectangle_mesh(0.1d, 0.01d, 10, 10);
-
-        mesh.getVertices().get(1).setSupport(new Support(true,true));
-        mesh.getVertices().get(2).setSupport(new Support(true,true));
-        mesh.getVertices().get(3).setForce(new Force(1,0));
-
-        for(FiniteElement2D f:mesh.getFaces()){
-            f.setMaterial(new Material(1E6,0.2));
-        }
-        ArrayList<Face> faces = mesh.getFaces().get(45).getNeighbors();
-        for(Face f:faces){
-            System.out.println(f);
-            ((FiniteElement2D)f).setMaterial(new Material(1E4,0.3));
-        }
-        mesh.solve();
-        //System.out.println(mesh.build_complete_stiffnes_matrix());
-        new Frame(mesh).renderMode(FEM_Panel.DISPLACEMENT).renderBoundaryConditions();
-
-//
-//        mesh.getNodes().get(0).setSupport(new Support(true,true));
-//        mesh.getNodes().get(100).setSupport(new Support(true,true));
-//        mesh.getNodes().get(5101).setForce(new Force(0,-10000));
-//        mesh.forEach_face(finiteElement2D -> finiteElement2D.setMaterial(new Material(70E9, 0.33)));
-//        mesh.forEach_face(finiteElement2D -> finiteElement2D.setThickness(0.01));
-//
-//        mesh.solve_with_reactions();
-//        System.out.println(mesh.getNodes().get(0).getSupport().getSupport_force());
-//        System.out.println(mesh.getNodes().get(100).getSupport().getSupport_force());
-//
-////        for (int i = 0; i < 0; i++) {
-////            mesh.solve();
-////
-////            double min = 1E13;
-////            double max = 0;
-////            for (FiniteElement2D element2D : mesh.getElements()) {
-////                min = Math.min(min, element2D.getEvaluated_stress().comparable_stress());
-////                max = Math.max(max, element2D.getEvaluated_stress().comparable_stress());
-////            }
-////
-////            new Frame(mesh);
-////            for (FiniteElement2D element2D : mesh.getElements()) {
-////                double stress = element2D.getEvaluated_stress().comparable_stress();
-////                double relative_stress = (stress - min) / (max - min + 1);
-////                element2D.getMaterial().setE(relative_stress < 0.5 ? element2D.getMaterial().getE() * 0.9d:element2D.getMaterial().getE());
-////            }
-////        }
-//
-//        new Frame(mesh).renderMode(Frame.STRESS).renderBoundaryConditions();
-
-
     }
 
 
@@ -260,7 +188,12 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
     }
 
     @Override
-    public Volume new_volume(Face... faces) {
+    public structs.Mesh<Node, Edge, FiniteElement2D, Volume> new_mesh() {
+        return new Mesh();
+    }
+
+    @Override
+    public Volume new_volume(FiniteElement2D... faces) {
         return new Volume(faces);
     }
 

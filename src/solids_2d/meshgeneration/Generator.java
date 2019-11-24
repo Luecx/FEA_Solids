@@ -29,20 +29,20 @@ public class Generator {
             for (int n = 0; n < nodes[0].length - 1; n++) {
                 if ((n + i) % 2 == 0) {
                     edges[i][n] = new Edge[]{
-                            new Edge(nodes[i][n], nodes[i][n+1]),
-                            new Edge(nodes[i][n+1], nodes[i+1][n+1]),
-                            new Edge(nodes[i+1][n+1], nodes[i+1][n]),
-                            new Edge(nodes[i+1][n], nodes[i][n]),
                             new Edge(nodes[i][n], nodes[i+1][n+1]),
-                            new Edge(nodes[i][n], nodes[i+1][n+1])};
+                            new Edge(nodes[i+1][n+1], nodes[i][n+1]),
+                            new Edge(nodes[i][n+1], nodes[i][n]),
+                            new Edge(nodes[i][n], nodes[i+1][n]),
+                            new Edge(nodes[i+1][n], nodes[i+1][n+1]),
+                            new Edge(nodes[i+1][n+1], nodes[i][n])};
                 }else{
                     edges[i][n] = new Edge[]{
-                            new Edge(nodes[i][n], nodes[i][n+1]),
-                            new Edge(nodes[i][n+1], nodes[i+1][n+1]),
-                            new Edge(nodes[i+1][n+1], nodes[i+1][n]),
-                            new Edge(nodes[i+1][n], nodes[i][n]),
                             new Edge(nodes[i+1][n], nodes[i][n+1]),
-                            new Edge(nodes[i+1][n], nodes[i][n+1])};
+                            new Edge(nodes[i+1][n+1], nodes[i][n+1]),
+                            new Edge(nodes[i][n+1], nodes[i][n]),
+                            new Edge(nodes[i][n], nodes[i+1][n]),
+                            new Edge(nodes[i+1][n], nodes[i+1][n+1]),
+                            new Edge(nodes[i][n+1], nodes[i+1][n])};
                 }
 
             }
@@ -51,12 +51,12 @@ public class Generator {
         //linking edges
         for (int i = 0; i < nodes.length - 1; i++) {
             for (int n = 0; n < nodes[0].length - 1; n++) {
-                edges[i][n][4].link(edges[i][n][5]);
+                edges[i][n][0].link(edges[i][n][5]);
                 if(n > 0){
                     edges[i][n][3].link(edges[i][n-1][1]);
                 }
                 if(i > 0){
-                    edges[i][n][0].link(edges[i-1][n][2]);
+                    edges[i][n][2].link(edges[i-1][n][4]);
                 }
             }
         }
@@ -65,11 +65,11 @@ public class Generator {
         for (int i = 0; i < nodes.length - 1; i++) {
             for (int n = 0; n < nodes[0].length - 1; n++) {
                 if ((n + i) % 2 == 0) {
-                    triangles.add(new Triangle(edges[i][n][0], edges[i][n][1], edges[i][n][5]));
-                    triangles.add(new Triangle(edges[i][n][2], edges[i][n][3], edges[i][n][4]));
+                    triangles.add(new Triangle(edges[i][n][0], edges[i][n][1], edges[i][n][2]));
+                    triangles.add(new Triangle(edges[i][n][3], edges[i][n][4], edges[i][n][5]));
                 }else{
-                    triangles.add(new Triangle(edges[i][n][0], edges[i][n][3], edges[i][n][4]));
-                    triangles.add(new Triangle(edges[i][n][1], edges[i][n][2], edges[i][n][5]));
+                    triangles.add(new Triangle(edges[i][n][0], edges[i][n][2], edges[i][n][3]));
+                    triangles.add(new Triangle(edges[i][n][1], edges[i][n][5], edges[i][n][4]));
                 }
             }
         }

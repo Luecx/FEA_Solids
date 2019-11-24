@@ -35,15 +35,11 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
      * Creates new form MeshEditor
      */
     public MeshEditor(Mesh mesh) {
-
-
         meshGen = new MeshGenerator(this);
         toSimple = new RunSettings(this);
         console = new Console();
         console.setVisible(true);
         renderToPng = new RenderToPng(this);
-
-
         jPanel1 = new FEM_Panel(mesh);
         jPanel1.addKeyListener(jPanel1);
         jPanel1.addMouseListener(jPanel1);
@@ -51,19 +47,14 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         jPanel1.renderColorPalette = true;
         this.addMouseListener(jPanel1);
         jPanel1.addMouseListener(this);
-
         initComponents();
-
-
         this.renderGrid(true);
         this.renderWireframe(true);
         this.renderLoads(true);
         this.renderKeys(false);
         this.renderMohr(false);
         this.radio_nothingActionPerformed(null);
-
         this.setVisible(true);
-
         this.popup_missing_resources();
     }
 
@@ -74,7 +65,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
-
         buttonGroup1 = new javax.swing.ButtonGroup();
         fileChooser = new javax.swing.JFileChooser();
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -167,11 +157,8 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         solver_sep_1 = new javax.swing.JPopupMenu.Separator();
         solver_menu_topology_optimization = new javax.swing.JMenu();
         item_to_simple = new javax.swing.JMenuItem();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jSplitPane1.setDividerLocation(360);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -182,28 +169,19 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 723, Short.MAX_VALUE)
         );
-
         jSplitPane1.setRightComponent(jPanel1);
-
         jPanel2.setLayout(new java.awt.GridLayout(2, 1));
-
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("selective generation"));
-
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-
         selective_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Support", "Force"}));
         selective_combo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selective_comboActionPerformed(evt);
             }
         });
-
         selective_combo_panel.setLayout(new java.awt.CardLayout());
-
         jLabel9.setText("support in x direction");
-
         jLabel10.setText("support in y direction");
-
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
@@ -234,17 +212,11 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                                 .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
-
         selective_combo_panel.add(jPanel11, "Support");
-
         jLabel11.setText("force in x direction");
-
         jLabel12.setText("force in y direction");
-
         selective_force_x.setText("0");
-
         selective_force_y.setText("0");
-
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
@@ -273,9 +245,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                         .addComponent(selective_force_y, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
         );
-
         selective_combo_panel.add(jPanel12, "Force");
-
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
@@ -291,18 +261,14 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                 .addComponent(selective_combo_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(50, 50, 50))
         );
-
         selective_gen.setText("generate");
         selective_gen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selective_genActionPerformed(evt);
             }
         });
-
         jLabel13.setText("X Position:");
-
         jLabel14.setText("Y Position:");
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -343,7 +309,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                 .addComponent(selective_gen, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(5, 5, 5))
         );
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -357,44 +322,30 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(43, Short.MAX_VALUE))
         );
-
         jPanel2.add(jPanel3);
-
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("automatic generation"));
-
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("<= x <=");
-
         auto_max_x.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         auto_max_x.setText("2");
-
         auto_min_x.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         auto_min_x.setText("0");
-
         auto_min_y.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         auto_min_y.setText("0");
-
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("<= y <=");
-
         auto_max_y.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         auto_max_y.setText("2");
-
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-
         auto_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Support", "Force"}));
         auto_combo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 auto_comboActionPerformed(evt);
             }
         });
-
         auto_combo_panel.setLayout(new java.awt.CardLayout());
-
         jLabel5.setText("support in x direction");
-
         jLabel6.setText("support in y direction");
-
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -425,17 +376,11 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                                 .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
-
         auto_combo_panel.add(jPanel8, "Support");
-
         jLabel3.setText("force in x direction");
-
         jLabel4.setText("force in y direction");
-
         auto_force_x.setText("0");
-
         auto_force_y.setText("0");
-
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -464,9 +409,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                         .addComponent(auto_force_y, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
         );
-
         auto_combo_panel.add(jPanel9, "Force");
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -482,14 +425,12 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                 .addComponent(auto_combo_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(50, 50, 50))
         );
-
         auto_gen.setText("generate");
         auto_gen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 auto_genActionPerformed(evt);
             }
         });
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -538,15 +479,10 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                                 .addComponent(auto_gen, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
-
         jPanel2.add(jPanel4);
-
         jSplitPane1.setLeftComponent(jPanel2);
-
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
-
         menu_file.setText("File");
-
         item_save_mesh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         item_save_mesh.setText("save mesh");
         item_save_mesh.addActionListener(new java.awt.event.ActionListener() {
@@ -555,7 +491,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_file.add(item_save_mesh);
-
         item_open_mesh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         item_open_mesh.setText("open mesh");
         item_open_mesh.addActionListener(new java.awt.event.ActionListener() {
@@ -565,9 +500,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         });
         menu_file.add(item_open_mesh);
         menu_file.add(file_sep_1);
-
         menu_export.setText("export");
-
         item_export_png.setText("PNG");
         item_export_png.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -575,12 +508,9 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_export.add(item_export_png);
-
         menu_file.add(menu_export);
         jMenuBar1.add(menu_file);
-
         menu_mesh.setText("Mesh");
-
         item_new_mesh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         item_new_mesh.setText("new mesh");
         item_new_mesh.addActionListener(new java.awt.event.ActionListener() {
@@ -590,21 +520,14 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         });
         menu_mesh.add(item_new_mesh);
         menu_mesh.add(mesh_sep_1);
-
         menu_material.setText("materials");
-
         item_new_material.setText("new material");
         menu_material.add(item_new_material);
         menu_material.add(mat_sep_1);
-
         add_material_items(menu_material);
-
         menu_mesh.add(menu_material);
-
         jMenuBar1.add(menu_mesh);
-
         menu_visual.setText("Visual");
-
         item_wireframe.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
         item_wireframe.setSelected(true);
         item_wireframe.setText("render wireframe");
@@ -614,7 +537,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_wireframe);
-
         item_grid.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         item_grid.setSelected(true);
         item_grid.setText("render grid");
@@ -624,7 +546,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_grid);
-
         item_loads.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
         item_loads.setSelected(true);
         item_loads.setText("render loads");
@@ -634,7 +555,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_loads);
-
         item_mohr.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         item_mohr.setSelected(true);
         item_mohr.setText("render mohr");
@@ -644,7 +564,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_mohr);
-
         item_keys.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
         item_keys.setSelected(true);
         item_keys.setText("render keybinds");
@@ -655,7 +574,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         });
         menu_visual.add(item_keys);
         menu_visual.add(visual_sep_1);
-
         radio_nothing.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_0, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_nothing);
         radio_nothing.setSelected(true);
@@ -666,7 +584,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(radio_nothing);
-
         radio_stress.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_stress);
         radio_stress.setText("render stress");
@@ -676,7 +593,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(radio_stress);
-
         radio_displacement.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_displacement);
         radio_displacement.setText("render displacement");
@@ -686,7 +602,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(radio_displacement);
-
         radio_young.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_young);
         radio_young.setText("render E-Module");
@@ -696,7 +611,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(radio_young);
-
         radio_stress_x.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_4, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_stress_x);
         radio_stress_x.setText("render stress (x)");
@@ -706,7 +620,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(radio_stress_x);
-
         radio_stress_y.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_5, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_stress_y);
         radio_stress_y.setText("render stress (y)");
@@ -716,7 +629,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(radio_stress_y);
-
         radio_stress_xy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_6, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_stress_xy);
         radio_stress_xy.setText("render stress (xy)");
@@ -726,7 +638,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(radio_stress_xy);
-
         radio_displacement_x.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_7, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_displacement_x);
         radio_displacement_x.setText("render displacement (x)");
@@ -736,7 +647,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(radio_displacement_x);
-
         radio_displacement_y.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_8, java.awt.event.InputEvent.CTRL_MASK));
         buttonGroup1.add(radio_displacement_y);
         radio_displacement_y.setText("render displacement (y)");
@@ -747,7 +657,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         });
         menu_visual.add(radio_displacement_y);
         menu_visual.add(visual_sep_2);
-
         item_move_up.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_UP, 0));
         item_move_up.setText("move up");
         item_move_up.addActionListener(new java.awt.event.ActionListener() {
@@ -756,7 +665,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_move_up);
-
         item_move_down.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DOWN, 0));
         item_move_down.setText("move down");
         item_move_down.addActionListener(new java.awt.event.ActionListener() {
@@ -765,7 +673,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_move_down);
-
         item_move_right.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_RIGHT, 0));
         item_move_right.setText("move right");
         item_move_right.addActionListener(new java.awt.event.ActionListener() {
@@ -774,7 +681,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_move_right);
-
         item_move_left.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_LEFT, 0));
         item_move_left.setText("move left");
         item_move_left.addActionListener(new java.awt.event.ActionListener() {
@@ -784,7 +690,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         });
         menu_visual.add(item_move_left);
         menu_visual.add(visual_sep_3);
-
         item_zoom_in.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ADD, java.awt.event.InputEvent.CTRL_MASK));
         item_zoom_in.setText("zoom in");
         item_zoom_in.addActionListener(new java.awt.event.ActionListener() {
@@ -793,7 +698,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_zoom_in);
-
         item_move_out.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SUBTRACT, java.awt.event.InputEvent.CTRL_MASK));
         item_move_out.setText("zoom out");
         item_move_out.addActionListener(new java.awt.event.ActionListener() {
@@ -803,7 +707,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         });
         menu_visual.add(item_move_out);
         menu_visual.add(visual_sep_4);
-
         item_increase_upper_limit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         item_increase_upper_limit.setText("increase upper limit");
         item_increase_upper_limit.addActionListener(new java.awt.event.ActionListener() {
@@ -812,7 +715,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_increase_upper_limit);
-
         item_decrease_upper_limit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         item_decrease_upper_limit.setText("decrease upper limit");
         item_decrease_upper_limit.addActionListener(new java.awt.event.ActionListener() {
@@ -821,7 +723,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_decrease_upper_limit);
-
         item_increase_lower_limit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
         item_increase_lower_limit.setText("increase lower limit");
         item_increase_lower_limit.addActionListener(new java.awt.event.ActionListener() {
@@ -830,7 +731,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_increase_lower_limit);
-
         item_decrease_lower_limit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         item_decrease_lower_limit.setText("decrease lower limit");
         item_decrease_lower_limit.addActionListener(new java.awt.event.ActionListener() {
@@ -839,11 +739,8 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         menu_visual.add(item_decrease_lower_limit);
-
         jMenuBar1.add(menu_visual);
-
         menu_solver.setText("Solver");
-
         item_solve.setText("solve");
         item_solve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -852,9 +749,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         });
         menu_solver.add(item_solve);
         menu_solver.add(solver_sep_1);
-
         solver_menu_topology_optimization.setText("topology optimization");
-
         item_to_simple.setText("topology optimization");
         item_to_simple.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -862,13 +757,9 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
         solver_menu_topology_optimization.add(item_to_simple);
-
         menu_solver.add(solver_menu_topology_optimization);
-
         jMenuBar1.add(menu_solver);
-
         setJMenuBar(jMenuBar1);
-
         pack();
     }// </editor-fold>
 
@@ -878,7 +769,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         String message = "";
         int missings = 0;
         String path = new File("").getAbsolutePath();
-
         for (int i = 0; i < direct.length; i++) {
             boolean ex = new File(path + "/resources/" + direct[i]).exists();
             if (!ex) {
@@ -886,9 +776,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                 missings++;
             }
         }
-
         if (missings == 0) return;
-
         JOptionPane.showMessageDialog(this,
                 message,
                 "Missing resources",
@@ -897,43 +785,35 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
 
 
     private void add_material_file_to_node(File file, JMenu jMenu) {
-
-
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = null;
             while ((line = reader.readLine()) != null) {
                 line = line.trim().replaceAll(" {2}", " ");
                 String[] split = line.split(" ");
-
                 JMenuItem item = new JMenuItem();
                 item.setText(split[0]);
-                item.addActionListener(e -> {
-                    set_material_for_all(Double.parseDouble(split[1]) * 1E9, Double.parseDouble(split[2]) * 1E9);
-                });
+                item.addActionListener(e -> set_material_for_all(Double.parseDouble(split[1]) * 1E9, Double.parseDouble(split[2])));
                 jMenu.add(item);
             }
         } catch (Exception ignored) {
         }
-
     }
 
 
     private void add_material_items(JMenu menu_material) {
-
         String path = new File("").getAbsolutePath();
         File[] files;
-        try{
+        try {
             files = new File(path + "/resources/material").listFiles();
-        }catch (Exception ignored){return;}
-
-        if(files == null) return;
-
+        } catch (Exception ignored) {
+            return;
+        }
+        if (files == null) return;
         for (File file : files) {
             String name = file.getName();
             if (!name.equals("default")) {
                 System.out.println("Loading materials: " + name);
-
                 JMenu menu = new JMenu();
                 menu.setText(name);
                 add_material_file_to_node(file, menu);
@@ -942,13 +822,11 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         }
         for (File file : files) {
             String name = file.getName();
-
             if (name.equals("default")) {
                 System.out.println("Loading materials: " + name);
                 add_material_file_to_node(file, menu_material);
             }
         }
-
     }
 
     private void set_material_for_all(double E, double v) {
@@ -1060,7 +938,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         jPanel1.lower_scaler = 1;
         jPanel1.upper_scalar = 1;
         radio_stress_y.setSelected(true);
-
         redraw();
     }
 
@@ -1111,31 +988,26 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
     private void item_zoom_inActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.zoom(0.8);
         redraw();
-
     }
 
     private void item_move_outActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.zoom(1.25);
         redraw();
-
     }
 
     private void item_increase_upper_limitActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.upper_scalar *= 1 / 0.6;
         redraw();
-
     }
 
     private void item_decrease_upper_limitActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.upper_scalar *= 0.6;
         redraw();
-
     }
 
     private void item_increase_lower_limitActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.lower_scaler *= 1 / 0.6;
         redraw();
-
     }
 
     private void item_decrease_lower_limitActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1151,15 +1023,12 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
 
     private void item_open_meshActionPerformed(java.awt.event.ActionEvent evt) {
         fileChooser.showOpenDialog(this);
-
-
         try {
             File file = fileChooser.getSelectedFile();
             Mesh mesh = new Mesh();
             if (file != null)
                 Loader.load(file.getAbsolutePath(), mesh);
             jPanel1.setMesh(mesh);
-
             this.redraw();
         } catch (IOException e) {
             e.printStackTrace();
@@ -1172,9 +1041,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             console.setVisible(true);
             new Thread(mesh::solve).start();
         }
-
         this.radio_stressActionPerformed(null);
-
         this.repaint();
     }
 
@@ -1187,7 +1054,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
 
     private void item_save_meshActionPerformed(java.awt.event.ActionEvent evt) {
         fileChooser.showOpenDialog(this);
-
         try {
             File file = fileChooser.getSelectedFile();
             if (file != null)
@@ -1229,19 +1095,15 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
     }
 
     private void auto_genActionPerformed(java.awt.event.ActionEvent evt) {
-
         double min_x = Double.parseDouble(auto_min_x.getText());
         double min_y = Double.parseDouble(auto_min_y.getText());
         double max_x = Double.parseDouble(auto_max_x.getText());
         double max_y = Double.parseDouble(auto_max_y.getText());
-
         for (Node f : jPanel1.getMesh().getVertices()) {
             double x = f.getPosition2D().getX();
             double y = f.getPosition2D().getY();
-
 //            System.out.println(x+ "  "+ y);
 //            System.out.println(min_x + " " + min_y + " " + max_x + " " + max_y);
-
             if (x >= min_x && y >= min_y && x <= max_x && y <= max_y) {
                 //System.out.println(f);
                 if (this.auto_combo.getSelectedItem().toString().equals("Support")) {
@@ -1255,7 +1117,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         }
         jPanel1.repaint();
-
     }
 
     private void item_export_pngActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1299,13 +1160,6 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
             }
         });
     }
-
-
-
-
-
-
-
     // Variables declaration - do not modify
 
     private MeshGenerator meshGen;
@@ -1427,24 +1281,19 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         selective_y_pos.setText(
                 "" + BigDecimal.valueOf(closest.getPosition2D().getY())
                         .setScale(4, RoundingMode.HALF_UP).doubleValue());
-
-
         jPanel1.highlightedNode = closest;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
     }
     // End of variables declaration                   
 }
