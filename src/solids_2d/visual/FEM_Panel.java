@@ -3,7 +3,6 @@ package solids_2d.visual;
 
 import core.Vertex;
 import core.vector.Vector2d;
-import core.vector.Vector3d;
 import solids_2d.Mesh;
 import solids_2d.Node;
 import solids_2d.elements.FiniteElement2D;
@@ -18,7 +17,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeListener;
 
 public class FEM_Panel extends Panel implements KeyListener, MouseListener {
 
@@ -239,6 +237,7 @@ public class FEM_Panel extends Panel implements KeyListener, MouseListener {
             if (this.renderColorPalette) {
                 render_cp(g, min, max);
             }
+            render_information(g);
         }
 
         if (this.renderKeys) {
@@ -310,7 +309,7 @@ public class FEM_Panel extends Panel implements KeyListener, MouseListener {
 
             if (renderWireframe) {
                 g.setColor(Color.black);
-                g.setStroke(new BasicStroke(2));
+                g.setStroke(new BasicStroke(1));
                 g.drawPolygon(x_points, y_points, 3);
             }
 
@@ -357,13 +356,22 @@ public class FEM_Panel extends Panel implements KeyListener, MouseListener {
             if (e instanceof Triangle) {
 
 
-                Vector3d cen = e.center();
-                Vector2d center = toScreenSpace(new Vector2d(cen.getX(), cen.getY()));
-
                 Stress2D s = e.getStress2D();
                 double a = s.mohr_angle();
+
+                Vector2d cen = moved_position(e.getNode(0)).add(
+                        moved_position(e.getNode(1)).add(
+                                moved_position(e.getNode(2))
+                        )
+                ).self_scale(1/3d);
+
+                Vector2d direction = new Vector2d(30 * Math.cos(a),- 30 * Math.sin(a));
+
+                Vector2d center = toScreenSpace(new Vector2d(cen.getX(), cen.getY())).sub(direction);
+                Vector2d target = center.add(direction.scale(2));
+
                 g.setColor(Color.black);
-                draw_arrow(g, center, center.add(new Vector2d(30 * Math.sin(a), 30 * Math.cos(a))), 3, 10, 10);
+                draw_arrow(g, center,target, 3, 3, 10);
             }
         }
     }

@@ -117,6 +117,8 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
         Matrix matrix = this.build_reduced_stiffnes_matrix();
         DenseVector loads = this.build_reduced_load_vector();
         DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads, Pool.getAvailableProcessors());
+        //DenseVector displacements = Solver.conjugate_gradient(matrix, loads, 1);
+
 
         this.apply_solution(displacements);
         this.calculate_stresses();

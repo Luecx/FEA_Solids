@@ -6,6 +6,7 @@ import solids_2d.Mesh;
 import solids_2d.Node;
 import solids_2d.elements.FiniteElement2D;
 import solids_2d.elements.Triangle;
+import solids_2d.visual.Frame;
 
 import java.util.ArrayList;
 
@@ -18,38 +19,38 @@ public class Generator {
      * @param nodes
      * @return
      */
-    public static Mesh connect_rectangular_nodes(Node[][] nodes) {
+    public static Mesh connect_rectangular_nodes(Node[][] nodes, boolean loopX) {
         ArrayList<FiniteElement2D> triangles = new ArrayList<>();
         ArrayList<Node> nodes_list = new ArrayList<>();
 
-        Edge[][][] edges = new Edge[nodes.length - 1][nodes[0].length - 1][5];
+        Edge[][][] edges = new Edge[nodes.length - 1 + (loopX ? 1:0)][nodes[0].length - 1][];
 
         //generating edges
-        for (int i = 0; i < nodes.length - 1; i++) {
+        for (int i = 0; i < nodes.length - 1 + (loopX ? 1:0); i++) {
             for (int n = 0; n < nodes[0].length - 1; n++) {
                 if ((n + i) % 2 == 0) {
                     edges[i][n] = new Edge[]{
-                            new Edge(nodes[i][n], nodes[i+1][n+1]),
-                            new Edge(nodes[i+1][n+1], nodes[i][n+1]),
+                            new Edge(nodes[i][n], nodes[(i+1) % nodes.length][n+1]),
+                            new Edge(nodes[(i+1) % nodes.length][n+1], nodes[i][n+1]),
                             new Edge(nodes[i][n+1], nodes[i][n]),
-                            new Edge(nodes[i][n], nodes[i+1][n]),
-                            new Edge(nodes[i+1][n], nodes[i+1][n+1]),
-                            new Edge(nodes[i+1][n+1], nodes[i][n])};
+                            new Edge(nodes[i][n], nodes[(i+1) % nodes.length][n]),
+                            new Edge(nodes[(i+1) % nodes.length][n], nodes[(i+1) % nodes.length][n+1]),
+                            new Edge(nodes[(i+1) % nodes.length][n+1], nodes[i][n])};
                 }else{
                     edges[i][n] = new Edge[]{
-                            new Edge(nodes[i+1][n], nodes[i][n+1]),
-                            new Edge(nodes[i+1][n+1], nodes[i][n+1]),
+                            new Edge(nodes[(i+1) % nodes.length][n], nodes[i][n+1]),
+                            new Edge(nodes[(i+1) % nodes.length][n+1], nodes[i][n+1]),
                             new Edge(nodes[i][n+1], nodes[i][n]),
-                            new Edge(nodes[i][n], nodes[i+1][n]),
-                            new Edge(nodes[i+1][n], nodes[i+1][n+1]),
-                            new Edge(nodes[i][n+1], nodes[i+1][n])};
+                            new Edge(nodes[i][n], nodes[(i+1) % nodes.length][n]),
+                            new Edge(nodes[(i+1) % nodes.length][n], nodes[(i+1) % nodes.length][n+1]),
+                            new Edge(nodes[i][n+1], nodes[(i+1) % nodes.length][n])};
                 }
 
             }
         }
 
         //linking edges
-        for (int i = 0; i < nodes.length - 1; i++) {
+        for (int i = 0; i < nodes.length - 1+ (loopX ? 1:0); i++) {
             for (int n = 0; n < nodes[0].length - 1; n++) {
                 edges[i][n][0].link(edges[i][n][5]);
                 if(n > 0){
@@ -62,7 +63,7 @@ public class Generator {
         }
 
         //generating faces
-        for (int i = 0; i < nodes.length - 1; i++) {
+        for (int i = 0; i < nodes.length - 1 + (loopX ? 1:0); i++) {
             for (int n = 0; n < nodes[0].length - 1; n++) {
                 if ((n + i) % 2 == 0) {
                     triangles.add(new Triangle(edges[i][n][0], edges[i][n][1], edges[i][n][2]));
@@ -78,6 +79,49 @@ public class Generator {
         return m;
     }
 
+    public static Mesh arc_mesh(double lever_length, double r_min, double r_max, double degrees, int subd_l, int subd_w) {
+        return Generator.connect_rectangular_nodes(arc_mesh_nodes(lever_length, r_min, r_max, degrees, subd_l, subd_w),false);
+    }
+
+    public static Mesh rectangle_mesh(double w, double h, int subd_w, int subd_h) {
+
+        return Generator.connect_rectangular_nodes(rectangle_mesh_nodes(w,h,subd_w,subd_h),false);
+    }
+
+    public static Mesh rectangle_hole_mesh_connected(double w, double r, int subd_a, int subd_r){
+        subd_a =  ((subd_a / 8)) * 8;
+        Node[][] nodes = new Node[8 * subd_a][subd_r + 1];
+
+        for(int k = 0; k < subd_a * 8 - 0.5; k++){
+            double angle = Math.PI * 2 * k / (subd_a * 8);
+            double inner = r;
+            double outer = distanceInQuad(w, angle);
+            for(int n = 0; n < subd_r + 0.5; n++){
+                double rad = inner + ((double)n / subd_r) * (outer -inner);
+                Node node = new Node(Math.cos(angle) * rad, Math.sin(angle) * rad);
+                nodes[k][n] = node;
+            }
+        }
+        return connect_rectangular_nodes(nodes, true);
+    }
+
+    public static Mesh rectangle_hole_mesh(double w, double r, int subd_a, int subd_r){
+        subd_a =  ((subd_a / 8)) * 8;
+        Node[][] nodes = new Node[8 * subd_a][subd_r + 1];
+
+        for(int k = 0; k < subd_a * 8 - 0.5; k++){
+            double angle = Math.PI * 2 * k / (subd_a * 8);
+            double inner = r;
+            double outer = distanceInQuad(w, angle);
+            for(int n = 0; n < subd_r + 0.5; n++){
+                double rad = inner + ((double)n / subd_r) * (outer -inner);
+                Node node = new Node(Math.cos(angle) * rad, Math.sin(angle) * rad);
+                nodes[k][n] = node;
+            }
+        }
+        return connect_rectangular_nodes(nodes, false);
+    }
+
     public static Node[][] arc_mesh_nodes(double lever_length, double r_min, double r_max, double degrees, int subd_l, int subd_w) {
         Node[][] nodes = new Node[subd_l + 1][subd_w + 1];
         for (int i = 0; i < subd_l + 1; i++) {
@@ -91,9 +135,21 @@ public class Generator {
         return nodes;
     }
 
-    public static Mesh arc_mesh(double lever_length, double r_min, double r_max, double degrees, int subd_l, int subd_w) {
-        return Generator.connect_rectangular_nodes(arc_mesh_nodes(lever_length, r_min, r_max, degrees, subd_l, subd_w));
+    public static Node[][] rectangle_mesh_nodes(double w, double h, int subd_w, int subd_h) {
+
+        Node[][] nodes = new Node[subd_w + 1][subd_h + 1];
+
+        for (int n = 0; n < subd_h + 1; n++) {
+            for (int i = 0; i < subd_w + 1; i++) {
+                Node node = new Node((double) w / (subd_w) * i, (double) h / (subd_h) * n);
+                nodes[i][n] = node;
+
+            }
+        }
+
+        return nodes;
     }
+
 
     public static Vector2d arc_function(double lever_length, double radius, double ref_radius, double degrees, double x) {
         double arc_l = ref_radius * Math.PI * degrees / 180;
@@ -112,24 +168,29 @@ public class Generator {
         }
     }
 
-    public static Node[][] rectangle_mesh_nodes(double w, double h, int subd_w, int subd_h) {
-
-        Node[][] nodes = new Node[subd_w + 1][subd_h + 1];
-
-        for (int n = 0; n < subd_h + 1; n++) {
-            for (int i = 0; i < subd_w + 1; i++) {
-                Node node = new Node((double) w / (subd_w) * i, (double) h / (subd_h) * n);
-                nodes[i][n] = node;
-
-            }
+    /**
+     * calculates the distance from the center of a quad with side length a given the angle
+     *
+     * ___y___
+     * |  |  |
+     * |  |__|x
+     * |     |
+     * |_____|
+     * @param angle
+     * @return
+     */
+    public static double distanceInQuad(double a, double angle) {
+        angle %= (Math.PI / 2);
+        if(angle > Math.PI / 4){
+            angle = Math.PI / 2 - angle;
         }
-
-        return nodes;
+        return a/2 / Math.cos(angle);
     }
 
-    public static Mesh rectangle_mesh(double w, double h, int subd_w, int subd_h) {
 
-        return Generator.connect_rectangular_nodes(rectangle_mesh_nodes(w,h,subd_w,subd_h));
+    public static void main(String[] args) {
+        Mesh mesh = rectangle_hole_mesh_connected(1,0.1,10,10);
+        new Frame(mesh).enableWireframe();
     }
 
 

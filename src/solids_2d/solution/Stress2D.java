@@ -14,8 +14,12 @@ public class Stress2D {
         return von_mises();
     }
 
-    public double mohr_angle() {
+    public double mohr_angle_2() {
         return Math.atan2(2 * tau, sigma_x-sigma_y);
+    }
+
+    public double mohr_angle() {
+        return mohr_angle_2()/ 2;
     }
 
     public double von_mises() {
@@ -54,4 +58,5 @@ public class Stress2D {
                 ", tau=" + tau +
                 '}';
     }
+
 }
