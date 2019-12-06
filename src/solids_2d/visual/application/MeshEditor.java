@@ -5,6 +5,7 @@
  */
 package solids_2d.visual.application;
 
+import neuralnetwork.builder.Network;
 import solids_2d.Mesh;
 import solids_2d.Node;
 import solids_2d.constraint.Force;
@@ -13,6 +14,7 @@ import solids_2d.elements.FiniteElement2D;
 import solids_2d.material.Material;
 import solids_2d.material.Materials;
 import solids_2d.meshgeneration.Generator;
+import solids_2d.topologieOptimization.NetworkOptimiser;
 import solids_2d.visual.FEM_Panel;
 import tools.Loader;
 
@@ -1096,6 +1098,8 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         ((CardLayout) this.selective_combo_panel.getLayout()).show(this.selective_combo_panel, name);
     }
 
+
+    //Network network = Network.load("resources/network/10_large.net");
     private void selective_genActionPerformed(java.awt.event.ActionEvent evt) {
         if (jPanel1.highlightedNode == null) return;
         Node f = jPanel1.highlightedNode;
@@ -1107,6 +1111,9 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
                     Double.parseDouble(selective_force_y.getText())
             ));
         }
+//        NetworkOptimiser opt = new NetworkOptimiser(jPanel1.getMesh());
+//        opt.setMeshYoung(network.calculate(opt.getMeshBC())[0]);
+
         jPanel1.repaint();
     }
 

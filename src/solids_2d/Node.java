@@ -88,5 +88,10 @@ public class Node extends Vertex {
         this.support.setSupport_force(new Force(this.data[6], this.data[7]));
 
     }
+
+    @Override
+    public String toString() {
+        return "Node " + this.getPosition2D();
+    }
 }
 
