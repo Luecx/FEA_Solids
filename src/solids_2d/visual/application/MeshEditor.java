@@ -900,6 +900,10 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         redraw();
     }
 
+    public void updateMeshFromTO(Mesh mesh){
+        this.getRenderPanel().setMesh(mesh);
+        this.radio_youngActionPerformed(null);
+    }
 
     private void radio_nothingActionPerformed(java.awt.event.ActionEvent evt) {
         jPanel1.renderMode = -1;
@@ -1312,5 +1316,7 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
+
     // End of variables declaration                   
 }

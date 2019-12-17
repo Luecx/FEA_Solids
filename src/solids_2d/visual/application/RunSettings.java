@@ -7,19 +7,31 @@ package solids_2d.visual.application;
 
 import solids_2d.Mesh;
 import solids_2d.topologieOptimization.Simple;
+import solids_2d.visual.FEM_Panel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author finne
  */
 public class RunSettings extends javax.swing.JDialog {
 
+
+    private MeshEditor meshEditor;
+
     /**
      * Creates new form RunSettings
      */
-    public RunSettings(java.awt.Frame parent) {
+    public RunSettings(MeshEditor parent) {
         super(parent, true);
+        this.meshEditor = parent;
         initComponents();
     }
 
@@ -35,6 +47,7 @@ public class RunSettings extends javax.swing.JDialog {
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
+
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -52,7 +65,8 @@ public class RunSettings extends javax.swing.JDialog {
         cutoff_step = new javax.swing.JTextField();
         cutoff_strength = new javax.swing.JTextField();
         cutoff_stress_limit = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        goButton = new javax.swing.JButton();
+        debugButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -112,22 +126,25 @@ public class RunSettings extends javax.swing.JDialog {
         cutoff_stress_limit.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cutoff_stress_limit.setText("0.9");
 
-        jButton2.setText("Go");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        goButton.setText("Go");
+        goButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                goButtonActionPerformed(evt);
             }
         });
+
+        debugButton.setText("Debug");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(debugButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(goButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -155,7 +172,7 @@ public class RunSettings extends javax.swing.JDialog {
                                                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addComponent(cutoff_stress_limit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(0, 51, Short.MAX_VALUE)))
+                                                .addGap(0, 30, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -193,23 +210,24 @@ public class RunSettings extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(cutoff_stress_limit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(debugButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(goButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>
 
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {
 
         if (mode_go) {
-            jButton2.setText("Cancel");
+            goButton.setText("Cancel");
             mode_go = false;
         } else {
             mode_go = true;
-            jButton2.setText("Go");
+            goButton.setText("Go");
             if (runningThread != null) {
                 runningThread.interrupt();
                 runningThread.stop();
@@ -218,7 +236,6 @@ public class RunSettings extends javax.swing.JDialog {
                 return;
             }
         }
-
 
         double v_cutoff_end = Double.parseDouble(cutoff_end.getText());
         double v_cutoff_start = Double.parseDouble(cutoff_start.getText());
@@ -229,12 +246,45 @@ public class RunSettings extends javax.swing.JDialog {
         double v_max_stress = Double.parseDouble(max_stress.getText());
         double v_max_stress_interrupt = Double.parseDouble(max_stress_interrupt.getText());
 
+        boolean debug = debugButton.isSelected();
+        String path = new File(".").getAbsolutePath() + "/debugOutput/"+System.currentTimeMillis()+"/";
+        new File(path).mkdirs();
+        System.out.println("debug output: " + new File(path).getAbsolutePath());
+
         final RunSettings runSettings = this;
 
         Simple s = new Simple(mesh) {
             @Override
             public void updateListener(String update, double v) {
                 runSettings.setTitle(update);
+                if(debug){
+
+                    try {
+                        Thread.sleep(10);
+                        String num = "" + BigDecimal.valueOf(v*100).setScale(5, RoundingMode.HALF_UP).doubleValue();
+                        meshEditor.getRenderPanel().renderMode = FEM_Panel.STRESS;
+                        BufferedImage img =
+                                meshEditor.getRenderPanel().renderImage(
+                                        meshEditor.getRenderPanel().getWidth(),
+                                        meshEditor.getRenderPanel().getHeight());
+                        System.out.println(num);
+                        ImageIO.write(img, "PNG", new File(path+"stress"+num+".png"));
+                        Thread.sleep(10);
+                        meshEditor.getRenderPanel().renderMode = FEM_Panel.E_MODUL;
+                        img = meshEditor.getRenderPanel().renderImage(
+                                        meshEditor.getRenderPanel().getWidth(),
+                                        meshEditor.getRenderPanel().getHeight());
+                        ImageIO.write(img, "PNG", new File(path+"young"+num+".png"));
+
+                        Thread.sleep(10);
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    } catch (InterruptedException e) {
+                        System.out.println(e);
+                    }
+                }
+                meshEditor.updateMeshFromTO(mesh);
+                meshEditor.redraw();
             }
         };
         s.cutoff_ratio_strength = v_cutoff_strength;
@@ -261,22 +311,22 @@ public class RunSettings extends javax.swing.JDialog {
     @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
-        jButton2.setEnabled(true);
-        jButton2.setText("Go");
+        goButton.setEnabled(true);
+        goButton.setText("Go");
     }
 
 
     boolean mode_go = true;
     Thread runningThread = null;
 
-
-    // Variables declaration - do not modify
+    // Variables declaration - do not modify                     
+    private javax.swing.JToggleButton debugButton;
+    private javax.swing.JButton goButton;
     private javax.swing.JTextField cutoff_end;
     private javax.swing.JTextField cutoff_start;
     private javax.swing.JTextField cutoff_step;
     private javax.swing.JTextField cutoff_strength;
     private javax.swing.JTextField cutoff_stress_limit;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

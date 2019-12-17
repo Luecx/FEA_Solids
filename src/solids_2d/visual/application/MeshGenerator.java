@@ -384,7 +384,7 @@ public class MeshGenerator extends javax.swing.JDialog {
         if (sel.equals("rectangle")){
             double B = Double.parseDouble(this.rec_b.getText());
             double H = Double.parseDouble(this.rec_h.getText());
-            Mesh mesh = Generator.rectangle_mesh(B,H, subd_x, subd_y);
+            Mesh mesh =  tools.Generator.rectangle_mesh(new Mesh(), B,H, subd_x, subd_y);
             this.mesh = mesh;
         } else if (sel.equals("arc")){
 
@@ -393,7 +393,7 @@ public class MeshGenerator extends javax.swing.JDialog {
             double r2 = Double.parseDouble(this.arc_r2.getText());
             double phi = Double.parseDouble(this.arc_phi.getText());
 
-            Mesh mesh = Generator.arc_mesh(L, r1,r2, phi, subd_x, subd_y);
+            Mesh mesh =  tools.Generator.arc_mesh(new Mesh(), L, r1,r2, phi, subd_x, subd_y);
             this.mesh = mesh;
         } else if (sel.equals("rectangle with hole")){
 
@@ -402,9 +402,9 @@ public class MeshGenerator extends javax.swing.JDialog {
             boolean connected = this.hole_connected.isSelected();
 
             if(connected){
-                this.mesh = Generator.rectangle_hole_mesh_connected(A, R, subd_x, subd_y);
+                this.mesh = tools.Generator.rectangle_hole_mesh_connected(new Mesh(), A, R, subd_x, subd_y);
             }else{
-                this.mesh = Generator.rectangle_hole_mesh(A, R, subd_x, subd_y);
+                this.mesh =  tools.Generator.rectangle_hole_mesh(new Mesh(), A, R, subd_x, subd_y);
             }
         }
 

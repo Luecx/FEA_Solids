@@ -199,5 +199,13 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
         return new Volume(faces);
     }
 
+    @Override
+    public FiniteElement2D[] empty_face_array() {
+        return new FiniteElement2D[0];
+    }
 
+    @Override
+    public Edge[] empty_edge_array() {
+        return new Edge[0];
+    }
 }
