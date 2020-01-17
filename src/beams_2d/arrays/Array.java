@@ -72,18 +72,4 @@ public class Array {
 
         return s;
     }
-
-    public static void main(String[] args) {
-
-
-        // create a matrix from the Mandelbrot set
-        Matrix m = new MandelbrotMatrix();
-
-        Matrix ch = m.chol();
-
-// show on screen
-        ch.showGUI();
-
-
-    }
 }

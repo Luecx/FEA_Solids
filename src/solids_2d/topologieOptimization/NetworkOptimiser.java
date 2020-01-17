@@ -196,20 +196,25 @@ public class NetworkOptimiser {
 
     public static void main(String[] args) throws InterruptedException {
         NetworkOptimiser opt = new NetworkOptimiser(10, 10);
-//        opt.trainSet = TrainSet.load("resources/network/to2.trst");
+
+
+        System.out.print("Loading Trainset... ");
+        opt.trainSet = TrainSet.load("resources/network/to3.trst");
+        System.out.println("Finished!");
 
 //        System.out.println(opt.trainSet.getInput(0));
 
-        for(int i = 0; i < 1000; i++){
-            opt.genNewEntry();
-            System.out.println("######################################### " + i + " ##########################################");
-            System.out.println("######################################### " + i + " ##########################################");
-            System.out.println("######################################### " + i + " ##########################################");
-        }
-        opt.trainSet.write("resources/network/to3.trst");
+//        for(int i = 0; i < 1000; i++){
+//            opt.genNewEntry();
+//            System.out.println("######################################### " + i + " ##########################################");
+//            System.out.println("######################################### " + i + " ##########################################");
+//            System.out.println("######################################### " + i + " ##########################################");
+//        }
+//        opt.trainSet.write("resources/network/to3.trst");
 
 
 
+//        System.out.print("Building Network... ");
 //        Builder builder = new Builder(4,11,11);
 //        builder.addNode("conv1", new ConvolutionNode(1, 3, 1, 0));
 //        builder.addNode("conv2", new ConvolutionNode(16, 3, 1, 0));
@@ -221,59 +226,51 @@ public class NetworkOptimiser {
 //        builder.addNode("deconv2", new DeconvNode(16, 3, 1, 0));
 //        builder.addNode("deconv3", new DeconvNode(1, 3, 1, 0));
 //        Network network = builder.build_network();
+//        System.out.println("Finished!");
 //        network.print_overview();
-//        network.print_timecheck();
 //        double e = 0.01;
 //        while(e > 1E-4){
 //            double avg = 0;
-//            for(int i = 0; i < 50; i++){
-//                avg += network.train(opt.trainSet.getInput(i), opt.trainSet.getOutput(i), 0.005);
+//            for(int i = 0; i < 200; i++){
+//                avg += network.train(opt.trainSet.getInput(i), opt.trainSet.getOutput(i), 0.01);
 //            }
 //            avg /= opt.trainSet.size();
 //            System.out.println("error: " + avg);
 //            e = avg;
 //        }
-//        network.write("resources/network/10_deconv.net");
+//        network.write("resources/network/10_conv_deconv.net");
 
 
 
 
-//        Network network = Network.load("resources/network/10_deconv.net");
-//        Tensor3D in = opt.newInput();
-//        System.out.println(in.getDimension(0) + " " + in.getDimension(1) + " " + in.getDimension(2));
-//        network.print_overview();
-//        Tensor3D out = network.calculate(in)[0];
-//        System.out.println(out.getDimension(0) + " " + out.getDimension(1) + " " + out.getDimension(2));
-//        opt.setMeshYoung(out);
-//        opt.setMeshBC(in);
-//
-//        System.out.println(in);
-//
-//
-//
-//
-//
+        Network network = Network.load("resources/network/10_conv_deconv.net");
+        Tensor3D in = opt.newInput();
+        System.out.println(in.getDimension(0) + " " + in.getDimension(1) + " " + in.getDimension(2));
+        network.print_overview();
+        Tensor3D out = network.calculate(in)[0];
+        System.out.println(out.getDimension(0) + " " + out.getDimension(1) + " " + out.getDimension(2));
+        opt.setMeshYoung(out);
+        opt.setMeshBC(in);
 
+        Frame f = new Frame(opt.mesh).renderMode(1).enableWireframe().renderBoundaryConditions();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-//        Frame f = new Frame(opt.mesh).renderMode(1).enableWireframe().renderBoundaryConditions();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                try {
-//                    for(int i = 0; i < 50; i++){
-//                        Thread.sleep(100);
-//                        Tensor3D in = opt.trainSet.getInput(i);
-//                        Tensor3D out = network.calculate(in)[0];
-//                        opt.setMeshYoung(out);
-//                        opt.setMeshBC(in);
-//                        f.repaint();
-//                    }
-//
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+                try {
+                    for(int i = 0; i < 50; i++){
+                        Thread.sleep(100);
+                        Tensor3D in = opt.trainSet.getInput(i);
+                        Tensor3D out = network.calculate(in)[0];
+                        opt.setMeshYoung(out);
+                        opt.setMeshBC(in);
+                        f.repaint();
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
