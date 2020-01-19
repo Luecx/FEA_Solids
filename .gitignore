@@ -6,3 +6,7 @@ out/
 META-INF/
 
 FEA_Solids.iml
+
+debugOutput/
+
+TopologieOptimization.iml
