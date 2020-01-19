@@ -2,27 +2,20 @@ package solids_2d.topologieOptimization;
 
 import core.Edge;
 import core.tensor.Tensor;
-import core.tensor.Tensor2D;
 import core.tensor.Tensor3D;
 import core.vector.Vector2d;
-import neuralnetwork.builder.Builder;
 import neuralnetwork.builder.Network;
 import neuralnetwork.data.TrainSet;
-import neuralnetwork.functions.ReLU;
-import neuralnetwork.functions.Sigmoid;
-import neuralnetwork.network.*;
 import solids_2d.Mesh;
 import solids_2d.Node;
 import solids_2d.constraint.Force;
 import solids_2d.constraint.Support;
 import solids_2d.elements.FiniteElement2D;
-import solids_2d.elements.Triangle;
 import solids_2d.material.Material;
-import solids_2d.meshgeneration.Generator;
-import solids_2d.visual.Frame;
+import solids_2d.visual.panel.Frame;
+import solids_2d.visual.panel.RenderMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class NetworkOptimiser {
@@ -38,7 +31,7 @@ public class NetworkOptimiser {
     int targetForces = 1;
 
     public NetworkOptimiser(int subdw, int subdh) {
-        this.mesh = Generator.rectangle_mesh(1, 1, subdw, subdh);
+        this.mesh = tools.Generator.rectangle_mesh(new Mesh(), 1, 1, subdw, subdh);
         this.findBoundaryVertices();
         this.trainSet = new TrainSet(4, subdw+1, subdh+1,
                 1, subdw, subdh);
@@ -252,24 +245,21 @@ public class NetworkOptimiser {
         opt.setMeshYoung(out);
         opt.setMeshBC(in);
 
-        Frame f = new Frame(opt.mesh).renderMode(1).enableWireframe().renderBoundaryConditions();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        Frame f = new Frame(opt.mesh).renderMode(RenderMode.E_MODUL).enableWireframe().renderBoundaryConditions();
+        new Thread(() -> {
 
-                try {
-                    for(int i = 0; i < 50; i++){
-                        Thread.sleep(100);
-                        Tensor3D in = opt.trainSet.getInput(i);
-                        Tensor3D out = network.calculate(in)[0];
-                        opt.setMeshYoung(out);
-                        opt.setMeshBC(in);
-                        f.repaint();
-                    }
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            try {
+                for(int i = 0; i < 50; i++){
+                    Thread.sleep(100);
+                    Tensor3D in1 = opt.trainSet.getInput(i);
+                    Tensor3D out1 = network.calculate(in1)[0];
+                    opt.setMeshYoung(out1);
+                    opt.setMeshBC(in1);
+                    f.repaint();
                 }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }).start();
     }

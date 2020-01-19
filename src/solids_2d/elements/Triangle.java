@@ -4,6 +4,7 @@ import core.Edge;
 import core.matrix.Matrix;
 import core.matrix.dense.DenseMatrix;
 import core.vector.DenseVector;
+import core.vector.Vector3d;
 import solids_2d.Node;
 import solids_2d.material.Material;
 import solids_2d.solution.Stress2D;
@@ -86,14 +87,10 @@ public class Triangle extends FiniteElement2D{
 
     @Override
     public void evaluate_stress() {
-        DenseVector sol = D.mul(B).mul(getNodeDisplacement());
 
-        this.setStress2D(new Stress2D(
-                sol.getValue(0),
-                sol.getValue(1),
-                sol.getValue(2)));
+        this.setStrain(new Vector3d(B.mul(getNodeDisplacement())));
+        this.setStress2D(new Stress2D(D.mul(this.getStrain())));
 
-        //this.setDisplacement();
     }
 
 

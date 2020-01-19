@@ -3,8 +3,8 @@
 //import core.matrix.Matrix;
 //import core.matrix.dense.DenseMatrix;
 //import core.vector.DenseVector;
-//import test.Node;
-//import test.Material;
+//import TestEditor.java.Node;
+//import TestEditor.java.Material;
 //import solids_2d.solution.Stress2D;
 //
 //public class Quad extends FiniteElement2D {

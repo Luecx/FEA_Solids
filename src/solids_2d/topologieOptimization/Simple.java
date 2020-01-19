@@ -6,10 +6,10 @@ import solids_2d.constraint.Force;
 import solids_2d.constraint.Support;
 import solids_2d.elements.FiniteElement2D;
 import solids_2d.material.Material;
-import solids_2d.meshgeneration.Generator;
 import solids_2d.solution.Stress2D;
-import solids_2d.visual.Frame;
-import tools.Loader;
+import solids_2d.visual.panel.Frame;
+import solids_2d.visual.panel.RenderMode;
+import tools.Generator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -113,7 +113,7 @@ public class Simple {
     public static void main(String[] args) throws IOException {
 
         int n = 80, i = 20;
-        Mesh m = Generator.rectangle_mesh(4, 1, n, i);
+        Mesh m = Generator.rectangle_mesh(new Mesh(), 4, 1, n, i);
         m.getVertices().get(0).setSupport(new Support(true,true));
         m.getVertices().get(3).setSupport(new Support(true,true));
         m.getVertices().get(42).setSupport(new Support(true,true));
@@ -167,7 +167,7 @@ public class Simple {
 
         //Loader.write("rect_optimized_load_bottom.mesh", m);
 
-        new Frame(m).renderMode(0).renderBoundaryConditions();
+        new Frame(m).renderMode(RenderMode.STRESS).renderBoundaryConditions();
 
     }
 

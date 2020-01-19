@@ -6,7 +6,6 @@
 package solids_2d.visual.application;
 
 import solids_2d.Mesh;
-import solids_2d.meshgeneration.Generator;
 
 import javax.swing.*;
 import java.awt.*;

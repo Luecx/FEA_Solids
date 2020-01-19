@@ -10,6 +10,7 @@ public class Node extends Vertex {
     private int id_x = -1,id_y = -1;
 
     private Vector2d displacement = new Vector2d(0,0);
+    private Vector2d localDisplacement = new Vector2d(0,0);
     private Force force = new Force(0,0);
     private Support support = new Support(false,false);
 
@@ -41,6 +42,14 @@ public class Node extends Vertex {
 
     public void setDisplacement(Vector2d displacement) {
         this.displacement = displacement;
+    }
+
+    public Vector2d getLocalDisplacement() {
+        return localDisplacement;
+    }
+
+    public void setLocalDisplacement(Vector2d localDisplacement) {
+        this.localDisplacement = localDisplacement;
     }
 
     public Force getForce() {

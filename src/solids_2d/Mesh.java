@@ -12,13 +12,8 @@ import core.vector.DenseVector;
 import core.vector.Vector;
 import core.vector.Vector2d;
 import solids_2d.constraint.Force;
-import solids_2d.constraint.Support;
 import solids_2d.elements.FiniteElement2D;
 import solids_2d.elements.Triangle;
-import solids_2d.material.Material;
-import solids_2d.meshgeneration.Generator;
-import solids_2d.visual.FEM_Panel;
-import solids_2d.visual.Frame;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -116,6 +111,7 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
     public DenseVector solve() {
         Matrix matrix = this.build_reduced_stiffnes_matrix();
         DenseVector loads = this.build_reduced_load_vector();
+        Solver.CONJUGATE_GRADIENT_MAX_ERROR = 1E-18;
         DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads, Pool.getAvailableProcessors());
         //DenseVector displacements = Solver.conjugate_gradient(matrix, loads, 1);
 
@@ -129,6 +125,7 @@ public class Mesh extends structs.Mesh<Node, Edge, FiniteElement2D, Volume> {
     public DenseVector solve(DenseVector x_0) {
         Matrix matrix = this.build_reduced_stiffnes_matrix();
         DenseVector loads = this.build_reduced_load_vector();
+        Solver.CONJUGATE_GRADIENT_MAX_ERROR = 1E-18;
         DenseVector displacements = Solver.precon_conjugate_gradient(matrix, loads, x_0,Pool.getAvailableProcessors());
 
         this.apply_solution(displacements);

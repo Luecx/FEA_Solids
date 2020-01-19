@@ -5,6 +5,7 @@ import core.Face;
 import core.matrix.Matrix;
 import core.matrix.sparse_matrix.HashMatrix;
 import core.vector.DenseVector;
+import core.vector.Vector3d;
 import solids_2d.Node;
 import solids_2d.material.Material;
 import solids_2d.solution.Stress2D;
@@ -14,6 +15,7 @@ public abstract class FiniteElement2D extends Face {
     private double thickness = 1;
     private Material material = new Material(1E6, 0.25);
 
+    private Vector3d strain = new Vector3d();
     private Stress2D stress2D = new Stress2D(0,0,0);
 
     public FiniteElement2D(Node... nodes){
@@ -50,6 +52,14 @@ public abstract class FiniteElement2D extends Face {
 
     public Stress2D getStress2D() {
         return stress2D;
+    }
+
+    public Vector3d getStrain() {
+        return strain;
+    }
+
+    public void setStrain(Vector3d strain) {
+        this.strain = strain;
     }
 
     public void setStress2D(Stress2D stress2D) {

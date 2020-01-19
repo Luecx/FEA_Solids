@@ -1,7 +1,6 @@
 package solids_2d.visual;
 
 import core.matrix.Matrix;
-import core.solver.direct.Solver;
 import core.vector.DenseVector;
 import solids_2d.Mesh;
 import solids_2d.Node;
@@ -10,13 +9,13 @@ import solids_2d.constraint.Support;
 import solids_2d.elements.FiniteElement2D;
 import solids_2d.elements.Triangle;
 import solids_2d.material.Material;
-import solids_2d.meshgeneration.Generator;
-import solids_2d.topologieOptimization.Simple;
-import tools.Loader;
+import solids_2d.visual.panel.FEM_Panel;
+import solids_2d.visual.panel.Frame;
+import solids_2d.visual.panel.RenderMode;
+import tools.Generator;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.function.Consumer;
 
 public class Cases {
@@ -24,7 +23,7 @@ public class Cases {
     public static Mesh arc_1() {
 
         double l = 0.1;
-        Mesh m = Generator.arc_mesh(l, 0.07, 0.4, 90, 150, 150 );
+        Mesh m = tools.Generator.arc_mesh(new Mesh(), l, 0.07, 0.4, 90, 150, 150 );
         m.forEach_node(new Consumer<Node>() {
             @Override
             public void accept(Node node) {
@@ -89,11 +88,11 @@ public class Cases {
         System.out.println(t2.getStress2D());
         //System.out.println(mesh.build_complete_stiffnes_matrix());
         //System.out.println(mesh.build_reduced_stiffnes_matrix());
-        new Frame(mesh).renderMode(FEM_Panel.STRESS).renderBoundaryConditions().enableWireframe();
+        new Frame(mesh).renderMode(RenderMode.STRESS).renderBoundaryConditions().enableWireframe();
     }
 
     public static Mesh rectangle_1(double w, double h, int subd_w, int subd_h, double force) {
-        Mesh mesh = Generator.rectangle_mesh(w, h, subd_w, subd_h);
+        Mesh mesh = Generator.rectangle_mesh(new Mesh(), w, h, subd_w, subd_h);
 
         for (int i = 0; i < subd_h + 1; i++) {
             mesh.getVertices().get(i * (subd_w + 1)).setSupport(new Support(true, true));
@@ -110,11 +109,11 @@ public class Cases {
 //        Mesh m = arc_1();
 //        m.solve();
 //        new Simple(m).run();
-//        Loader.write("test.mesh", m);
+//        Loader.write("TestEditor.java.mesh", m);
 
 
 //        Mesh loaded = new Mesh();
-//        Loader.load("test.mesh",loaded);
+//        Loader.load("TestEditor.java.mesh",loaded);
 //        new Frame(loaded);
 
 

@@ -7,11 +7,11 @@ package solids_2d.visual.application;
 
 import solids_2d.Mesh;
 import solids_2d.topologieOptimization.Simple;
-import solids_2d.visual.FEM_Panel;
+import solids_2d.visual.panel.FEM_Panel;
+import solids_2d.visual.panel.RenderMode;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -262,7 +262,7 @@ public class RunSettings extends javax.swing.JDialog {
                     try {
                         Thread.sleep(10);
                         String num = "" + BigDecimal.valueOf(v*100).setScale(5, RoundingMode.HALF_UP).doubleValue();
-                        meshEditor.getRenderPanel().renderMode = FEM_Panel.STRESS;
+                        meshEditor.getRenderPanel().renderMode = RenderMode.STRESS;
                         BufferedImage img =
                                 meshEditor.getRenderPanel().renderImage(
                                         meshEditor.getRenderPanel().getWidth(),
@@ -270,7 +270,7 @@ public class RunSettings extends javax.swing.JDialog {
                         System.out.println(num);
                         ImageIO.write(img, "PNG", new File(path+"stress"+num+".png"));
                         Thread.sleep(10);
-                        meshEditor.getRenderPanel().renderMode = FEM_Panel.E_MODUL;
+                        meshEditor.getRenderPanel().renderMode = RenderMode.E_MODUL;
                         img = meshEditor.getRenderPanel().renderImage(
                                         meshEditor.getRenderPanel().getWidth(),
                                         meshEditor.getRenderPanel().getHeight());
