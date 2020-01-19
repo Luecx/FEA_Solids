@@ -247,9 +247,11 @@ public class RunSettings extends javax.swing.JDialog {
         double v_max_stress_interrupt = Double.parseDouble(max_stress_interrupt.getText());
 
         boolean debug = debugButton.isSelected();
-        String path = new File(".").getAbsolutePath() + "/debugOutput/"+System.currentTimeMillis()+"/";
-        new File(path).mkdirs();
-        System.out.println("debug output: " + new File(path).getAbsolutePath());
+        final String path=new File(".").getAbsolutePath() + "/debugOutput/"+System.currentTimeMillis()+"/";
+        if(debug){
+            new File(path).mkdirs();
+            System.out.println("debug output: " + new File(path).getAbsolutePath());
+        }
 
         final RunSettings runSettings = this;
 
@@ -268,13 +270,15 @@ public class RunSettings extends javax.swing.JDialog {
                                         meshEditor.getRenderPanel().getWidth(),
                                         meshEditor.getRenderPanel().getHeight());
                         System.out.println(num);
-                        ImageIO.write(img, "PNG", new File(path+"stress"+num+".png"));
+                        if(debug)
+                            ImageIO.write(img, "PNG", new File(path+"stress"+num+".png"));
                         Thread.sleep(10);
                         meshEditor.getRenderPanel().renderMode = RenderMode.E_MODUL;
                         img = meshEditor.getRenderPanel().renderImage(
                                         meshEditor.getRenderPanel().getWidth(),
                                         meshEditor.getRenderPanel().getHeight());
-                        ImageIO.write(img, "PNG", new File(path+"young"+num+".png"));
+                        if(debug)
+                            ImageIO.write(img, "PNG", new File(path+"young"+num+".png"));
 
                         Thread.sleep(10);
                     } catch (IOException e) {

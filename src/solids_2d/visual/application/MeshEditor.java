@@ -1202,12 +1202,9 @@ public class MeshEditor extends javax.swing.JFrame implements MouseListener {
         Mesh mesh = jPanel1.getMesh();
         if (mesh != null) {
             console.setVisible(true);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    mesh.solve();
-                    redraw();
-                }
+            new Thread(() -> {
+                mesh.solve();
+                redraw();
             }).start();
         }
         this.radio_stressActionPerformed(null);
